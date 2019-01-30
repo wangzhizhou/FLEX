@@ -15,13 +15,16 @@
 #import "FLEXObjectExplorerViewController.h"
 #import "FLEXObjectExplorerFactory.h"
 #import "FLEXNetworkHistoryTableViewController.h"
+#import "FLEXCodeTargetViewController.h"
+#import "UIView+Swizzling.h"
 
 static NSString *const kFLEXToolbarTopMarginDefaultsKey = @"com.flex.FLEXToolbar.topMargin";
 
 typedef NS_ENUM(NSUInteger, FLEXExplorerMode) {
     FLEXExplorerModeDefault,
     FLEXExplorerModeSelect,
-    FLEXExplorerModeMove
+    FLEXExplorerModeMove,
+    FLEXExplorerModeTarget
 };
 
 @interface FLEXExplorerViewController () <FLEXHierarchyTableViewControllerDelegate, FLEXGlobalsTableViewControllerDelegate>
@@ -367,6 +370,7 @@ typedef NS_ENUM(NSUInteger, FLEXExplorerMode) {
     [self.explorerToolbar.hierarchyItem addTarget:self action:@selector(hierarchyButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self.explorerToolbar.moveItem addTarget:self action:@selector(moveButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self.explorerToolbar.globalsItem addTarget:self action:@selector(globalsButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [self.explorerToolbar.targetItem addTarget:self action:@selector(targetButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self.explorerToolbar.closeItem addTarget:self action:@selector(closeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 }
 
@@ -404,6 +408,11 @@ typedef NS_ENUM(NSUInteger, FLEXExplorerMode) {
     [self toggleMoveTool];
 }
 
+- (void)targetButtonTapped: (FLEXToolbarItem *)sender
+{
+    [self toggleTargetTool];
+}
+
 - (void)globalsButtonTapped:(FLEXToolbarItem *)sender
 {
     [self toggleMenuTool];
@@ -420,6 +429,7 @@ typedef NS_ENUM(NSUInteger, FLEXExplorerMode) {
     // Move and details only active when an object is selected.
     BOOL hasSelectedObject = self.selectedView != nil;
     self.explorerToolbar.moveItem.enabled = hasSelectedObject;
+    self.explorerToolbar.targetItem.enabled = hasSelectedObject;
     self.explorerToolbar.selectItem.selected = self.currentMode == FLEXExplorerModeSelect;
     self.explorerToolbar.moveItem.selected = self.currentMode == FLEXExplorerModeMove;
 }
@@ -860,6 +870,15 @@ typedef NS_ENUM(NSUInteger, FLEXExplorerMode) {
     } else {
         self.currentMode = FLEXExplorerModeMove;
     }
+}
+
+- (void)toggleTargetTool
+{
+    [self toggleToolWithViewControllerProvider:^UIViewController *{
+        FLEXCodeTargetViewController *codeTargetViewController = [[FLEXCodeTargetViewController alloc] init];
+        codeTargetViewController.selectedView = self.selectedView;
+        return [[UINavigationController alloc] initWithRootViewController:codeTargetViewController];
+    } completion:nil];
 }
 
 - (void)toggleViewsTool

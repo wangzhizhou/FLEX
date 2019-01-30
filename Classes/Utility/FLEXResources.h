@@ -17,6 +17,7 @@
 + (UIImage *)hierarchyIndentPattern;
 + (UIImage *)listIcon;
 + (UIImage *)moveIcon;
++ (UIImage *)targetIcon;
 + (UIImage *)selectIcon;
 + (UIImage *)checkerPattern;
 

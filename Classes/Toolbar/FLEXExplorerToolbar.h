@@ -28,6 +28,10 @@
 /// Users of the toolbar can configure the enabled/selected state and event targets/actions.
 @property (nonatomic, strong, readonly) FLEXToolbarItem *moveItem;
 
+/// Toolbar item for code init location for views.
+/// Users of the toolbar can configure the enabled/selected state and event targets/actions.
+@property (nonatomic, strong, readonly) FLEXToolbarItem *targetItem;
+
 /// Toolbar item for inspecting details of the selected view.
 /// Users of the toolbar can configure the enabled state and event targets/actions.
 @property (nonatomic, strong, readonly) FLEXToolbarItem *globalsItem;

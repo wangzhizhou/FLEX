@@ -27,6 +27,7 @@
 
 - (void)toggleSelectTool;
 - (void)toggleMoveTool;
+- (void)toggleTargetTool;
 - (void)toggleViewsTool;
 - (void)toggleMenuTool;
 - (void)handleDownArrowKeyPressed;
