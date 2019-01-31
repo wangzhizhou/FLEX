@@ -24,7 +24,7 @@
     self.textView = [[UITextView alloc] initWithFrame:self.view.bounds];
     [self.view addSubview:self.textView];
     
-    self.textView.text = [self.selectedView.stackInfo componentsJoinedByString:@"\n"];
+    self.textView.text = [[self.selectedView.stackInfo subarrayWithRange:NSMakeRange(2, self.selectedView.stackInfo.count - 2)] componentsJoinedByString:@"\n"];
     
 }
 
@@ -37,7 +37,6 @@
 - (void)donePressed:(id)sender
 {
     [self dismissViewControllerAnimated:YES completion:nil];
-//    [self.delegate globalsViewControllerDidFinish:self];
 }
 
 @end
